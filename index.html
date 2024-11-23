@@ -49,8 +49,8 @@
     </nav>
 
     <div class="container mt-4">
-        <h1 class="text-center text-primary">Graphs</h1>
-        <p class="text-center">Analyze sales trends based on flowers and customer preferences!</p>
+        <h1 class="text-center text-primary">Graphs and Profit Maximization Tips</h1>
+        <p class="text-center">Analyze sales trends and learn how to optimize profits based on flower demand!</p>
 
         <!-- Month Selector -->
         <div class="row my-4">
@@ -73,6 +73,12 @@
             </div>
         </div>
 
+        <!-- Profit Maximization Tips -->
+        <div id="profitTips" class="my-4 text-center">
+            <h4>Maximize Your Profits This Month!</h4>
+            <p id="seasonalTips">Select a month to see customized tips.</p>
+        </div>
+
         <!-- Graphs Section -->
         <div class="row my-4" id="graphs">
             <div class="col-lg-6">
@@ -91,20 +97,20 @@
     </footer>
 
     <script>
-       const monthlyData = {
-    January: { flowers: [500, 600, 450, 400, 350, 300], segments: [700, 800, 600, 400] },
-    February: { flowers: [550, 620, 460, 420, 370, 320], segments: [720, 830, 620, 420] },
-    March: { flowers: [600, 640, 470, 430, 390, 340], segments: [740, 860, 640, 440] },
-    April: { flowers: [620, 660, 480, 440, 400, 350], segments: [760, 880, 660, 460] },
-    May: { flowers: [640, 680, 490, 450, 410, 360], segments: [780, 900, 680, 480] },
-    June: { flowers: [660, 700, 500, 460, 420, 370], segments: [800, 920, 700, 500] },
-    July: { flowers: [680, 720, 510, 470, 430, 380], segments: [820, 940, 720, 520] },
-    August: { flowers: [700, 740, 520, 480, 440, 390], segments: [840, 960, 740, 540] },
-    September: { flowers: [720, 760, 530, 490, 450, 400], segments: [860, 980, 760, 560] },
-    October: { flowers: [740, 780, 540, 500, 460, 410], segments: [880, 1000, 780, 580] },
-    November: { flowers: [760, 800, 550, 510, 470, 420], segments: [900, 1020, 800, 600] },
-    December: { flowers: [780, 820, 560, 520, 480, 430], segments: [920, 1040, 820, 620] },
-};
+        const monthlyData = {
+            January: { flowers: [500, 600, 450, 400, 350, 300], segments: [700, 800, 600, 400], tips: "January is great for wedding events. Promote roses and lilies for engagements and ceremonies." },
+            February: { flowers: [550, 620, 460, 420, 370, 320], segments: [720, 830, 620, 420], tips: "In February, focus on Valentine's Day. Roses and tulips sell fast!" },
+            March: { flowers: [600, 640, 470, 430, 390, 340], segments: [740, 860, 640, 440], tips: "March sees an increase in temple visits. Jasmine and marigolds are in high demand." },
+            April: { flowers: [620, 660, 480, 440, 400, 350], segments: [760, 880, 660, 460], tips: "With spring festivals, offer flowers in bulk for celebrations like New Year or Easter." },
+            May: { flowers: [640, 680, 490, 450, 410, 360], segments: [780, 900, 680, 480], tips: "May is perfect for Mother's Day. Offer bouquets of roses and lilies as gifts." },
+            June: { flowers: [660, 700, 500, 460, 420, 370], segments: [800, 920, 700, 500], tips: "Summer weddings increase demand for marigolds and sunflowers." },
+            July: { flowers: [680, 720, 510, 470, 430, 380], segments: [820, 940, 720, 520], tips: "Focus on sunflowers and tropical flowers during summer events." },
+            August: { flowers: [700, 740, 520, 480, 440, 390], segments: [840, 960, 740, 540], tips: "August sees corporate event planners buying flowers in bulk. Focus on elegant, classic blooms like lilies." },
+            September: { flowers: [720, 760, 530, 490, 450, 400], segments: [860, 980, 760, 560], tips: "September is ideal for back-to-school promotions. Offer vibrant flowers like daisies and sunflowers." },
+            October: { flowers: [740, 780, 540, 500, 460, 410], segments: [880, 1000, 780, 580], tips: "October brings festive demand for marigolds and chrysanthemums during Diwali." },
+            November: { flowers: [760, 800, 550, 510, 470, 420], segments: [900, 1020, 800, 600], tips: "November sees high sales for Thanksgiving. Offer a variety of seasonal bouquets." },
+            December: { flowers: [780, 820, 560, 520, 480, 430], segments: [920, 1040, 820, 620], tips: "In December, Christmas and New Year drive floral sales. Poinsettias and holly are top sellers." }
+        };
 
         const flowerSalesChart = new Chart(
             document.getElementById('flowerSalesChart'),
@@ -147,6 +153,9 @@
                 borderWidth: 1,
             }];
             consumerSegmentChart.update();
+
+            // Display Seasonal Tips
+            document.getElementById('seasonalTips').textContent = data.tips;
         });
 
         // Initialize with January data
@@ -155,3 +164,4 @@
 </body>
 
 </html>
+
