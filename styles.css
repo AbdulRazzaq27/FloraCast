@@ -1,49 +1,115 @@
-.main {
-    background-image: url('backgroundimg.jpg'); /* Path to the image */
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-    color: white;
-}
+    /* General Reset */
+    body, html {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
 
-/* Center the search box */
-.search-container {
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.5); /* Slightly transparent background */
-    padding: 20px;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 500px;
-}
+    /* Navbar */
+    .navbar {
+        /* background-color: black; */
+        position: fixed;
+        width: 100%;
+        z-index: 10; /* Ensures navbar is above other elements */
+        
+    }
 
-.search-container input[type="text"] {
-    width: 80%;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: none;
-}
+    .navbar a.nav-link {
+        color: white; /* Ensures visibility on dark background */
+        transition: color 0.3s ease-in-out;
+    }
 
-.search-container button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    background-color: #28a745;
-    color: white;
-    cursor: pointer;
-}
+    .navbar a.nav-link:hover {
+        color: #28a745; /* Green hover effect for links */
+    }
 
-.search-container button:hover {
-    background-color: #218838;
-}
+    .navbar .navbar-brand {
+        color: white;
+        font-weight: bold;
+    }
 
-.navbar {
-    position: fixed;
-    width: 100%;
-}
+    .navbar .navbar-toggler-icon {
+        background-color: white; /* Ensures icon is visible on dark backgrounds */
+    }
+
+    /* Main Section */
+    .main {
+        background-image: url('backgroundimg.jpg'); /* Path to your image */
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-color: #000; /* Fallback color if image doesn't load */
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: center;
+        padding: 20px;
+    }
+
+    /* Search Container */
+    .search-container {
+        background-color: rgba(0, 0, 0, 0.5); /* Slightly transparent black */
+        padding: 20px;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 500px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+    }
+
+    .search-container h2 {
+        margin-bottom: 20px;
+        font-size: 1.8em;
+        color: #fff;
+    }
+
+    .search-container input[type="text"] {
+        width: calc(100% - 20px); /* Adjust for padding */
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        margin-bottom: 15px; /* Spacing between input and button */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .search-container button {
+        width: 100%; /* Full-width for mobile responsiveness */
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        background-color: #28a745;
+        color: white;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    .search-container button:hover {
+        background-color: #218838;
+    }
+
+    /* Media Queries for Responsiveness */
+    @media (max-width: 768px) {
+        .main {
+            height: auto; /* Adjust height for scrolling on smaller screens */
+            padding: 20px;
+        }
+
+        .search-container {
+            width: 90%; /* Slightly wider on small screens */
+        }
+
+        .search-container h2 {
+            font-size: 1.5em; /* Slightly smaller heading */
+        }
+    }
+
+    /* Accessibility & Focus States */
+    input[type="text"]:focus, button:focus {
+        outline: 2px solid #28a745;
+        outline-offset: 2px;
+    }
