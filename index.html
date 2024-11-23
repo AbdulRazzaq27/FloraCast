@@ -91,12 +91,20 @@
     </footer>
 
     <script>
-        const monthlyData = {
-            January: { flowers: [500, 600, 450, 400, 350, 300], segments: [700, 800, 600, 400] },
-            February: { flowers: [550, 620, 460, 420, 370, 320], segments: [720, 830, 620, 420] },
-            March: { flowers: [600, 640, 470, 430, 390, 340], segments: [740, 860, 640, 440] },
-            // Add data for all months
-        };
+       const monthlyData = {
+    January: { flowers: [500, 600, 450, 400, 350, 300], segments: [700, 800, 600, 400] },
+    February: { flowers: [550, 620, 460, 420, 370, 320], segments: [720, 830, 620, 420] },
+    March: { flowers: [600, 640, 470, 430, 390, 340], segments: [740, 860, 640, 440] },
+    April: { flowers: [620, 660, 480, 440, 400, 350], segments: [760, 880, 660, 460] },
+    May: { flowers: [640, 680, 490, 450, 410, 360], segments: [780, 900, 680, 480] },
+    June: { flowers: [660, 700, 500, 460, 420, 370], segments: [800, 920, 700, 500] },
+    July: { flowers: [680, 720, 510, 470, 430, 380], segments: [820, 940, 720, 520] },
+    August: { flowers: [700, 740, 520, 480, 440, 390], segments: [840, 960, 740, 540] },
+    September: { flowers: [720, 760, 530, 490, 450, 400], segments: [860, 980, 760, 560] },
+    October: { flowers: [740, 780, 540, 500, 460, 410], segments: [880, 1000, 780, 580] },
+    November: { flowers: [760, 800, 550, 510, 470, 420], segments: [900, 1020, 800, 600] },
+    December: { flowers: [780, 820, 560, 520, 480, 430], segments: [920, 1040, 820, 620] },
+};
 
         const flowerSalesChart = new Chart(
             document.getElementById('flowerSalesChart'),
