@@ -37,8 +37,25 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#about">About</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#flowers-by-month">Flowers by Month</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="flowersByMonthDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Flowers by Month
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="flowersByMonthDropdown">
+                            <li><a class="dropdown-item" href="#">January: Roses and Lilies</a></li>
+                            <li><a class="dropdown-item" href="#">February: Roses and Marigolds</a></li>
+                            <li><a class="dropdown-item" href="#">March: Jasmine and Marigolds</a></li>
+                            <li><a class="dropdown-item" href="#">April: Bulk flowers for celebrations</a></li>
+                            <li><a class="dropdown-item" href="#">May: Bouquets of Roses and Lilies</a></li>
+                            <li><a class="dropdown-item" href="#">June: Marigolds and Sunflowers</a></li>
+                            <li><a class="dropdown-item" href="#">July: Sunflowers and Tropical Flowers</a></li>
+                            <li><a class="dropdown-item" href="#">August: Elegant, classic blooms like Lilies</a></li>
+                            <li><a class="dropdown-item" href="#">September: Vibrant flowers like Daisies and Sunflowers</a></li>
+                            <li><a class="dropdown-item" href="#">October: Marigolds and Chrysanthemums</a></li>
+                            <li><a class="dropdown-item" href="#">November: Seasonal bouquets</a></li>
+                            <li><a class="dropdown-item" href="#">December: Poinsettias and Holly</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#graphs">Graphs</a>
@@ -52,31 +69,22 @@
         <h1 class="text-center text-primary">Graphs and Profit Maximization Tips</h1>
         <p class="text-center">Analyze sales trends and learn how to optimize profits based on flower demand!</p>
 
-        <!-- Month Selector -->
-        <div class="row my-4">
+        <!-- Season Selector (Initially disabled) -->
+        <div class="row my-4" id="seasonSelectorContainer">
             <div class="col-md-6 offset-md-3 text-center">
-                <label for="monthSelector" class="form-label">Select Month:</label>
-                <select id="monthSelector" class="form-select">
-                    <option value="January">January</option>
-                    <option value="February">February</option>
-                    <option value="March">March</option>
-                    <option value="April">April</option>
-                    <option value="May">May</option>
-                    <option value="June">June</option>
-                    <option value="July">July</option>
-                    <option value="August">August</option>
-                    <option value="September">September</option>
-                    <option value="October">October</option>
-                    <option value="November">November</option>
-                    <option value="December">December</option>
+                <label for="seasonSelector" class="form-label">Select Season:</label>
+                <select id="seasonSelector" class="form-select" disabled>
+                    <option value="Spring">Spring</option>
+                    <option value="Summer">Summer</option>
+                    <option value="Fall">Fall</option>
+                    <option value="Winter">Winter</option>
                 </select>
             </div>
         </div>
 
-        <!-- Profit Maximization Tips -->
-        <div id="profitTips" class="my-4 text-center">
-            <h4>Maximize Your Profits This Month!</h4>
-            <p id="seasonalTips">Select a month to see customized tips.</p>
+        <!-- Season Description Section -->
+        <div id="seasonDescription" class="mt-3 text-center">
+            <p>Select a season to see the flower's use by season and festival.</p>
         </div>
 
         <!-- Graphs Section -->
@@ -90,6 +98,36 @@
                 <canvas id="consumerSegmentChart"></canvas>
             </div>
         </div>
+
+        <!-- Profit Calculation Section -->
+        <div class="row my-4">
+            <div class="col-md-6 offset-md-3">
+                <h4 class="text-center">Calculate Your Profit</h4>
+                <div class="row my-4">
+                    <div class="col-md-6 offset-md-3 text-center">
+                        <label for="flowerSelector" class="form-label">Select Flower:</label>
+                        <select id="flowerSelector" class="form-select" disabled>
+                            <!-- Flower options will be populated dynamically based on season -->
+                        </select>
+                    </div>
+                </div>
+                <form id="profitForm">
+                    <div class="mb-3">
+                        <label for="buyingPrice" class="form-label">Enter Buying Price (per flower):</label>
+                        <input type="number" class="form-control" id="buyingPrice" placeholder="Enter price per flower">
+                    </div>
+                    <div class="mb-3">
+                        <label for="flowersToBuy" class="form-label">Enter Number of Flowers:</label>
+                        <input type="number" class="form-control" id="flowersToBuy" placeholder="Enter number of flowers">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Calculate Profit</button>
+                </form>
+
+                <div id="profitResult" class="mt-3 text-center">
+                    <p id="profitMessage"></p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <footer class="text-center py-3 bg-primary text-white">
@@ -97,71 +135,134 @@
     </footer>
 
     <script>
-        const monthlyData = {
-            January: { flowers: [500, 600, 450, 400, 350, 300], segments: [700, 800, 600, 400], tips: "January is great for wedding events. Promote roses and lilies for engagements and ceremonies." },
-            February: { flowers: [550, 620, 460, 420, 370, 320], segments: [720, 830, 620, 420], tips: "In February, focus on Valentine's Day. Roses and tulips sell fast!" },
-            March: { flowers: [600, 640, 470, 430, 390, 340], segments: [740, 860, 640, 440], tips: "March sees an increase in temple visits. Jasmine and marigolds are in high demand." },
-            April: { flowers: [620, 660, 480, 440, 400, 350], segments: [760, 880, 660, 460], tips: "With spring festivals, offer flowers in bulk for celebrations like New Year or Easter." },
-            May: { flowers: [640, 680, 490, 450, 410, 360], segments: [780, 900, 680, 480], tips: "May is perfect for Mother's Day. Offer bouquets of roses and lilies as gifts." },
-            June: { flowers: [660, 700, 500, 460, 420, 370], segments: [800, 920, 700, 500], tips: "Summer weddings increase demand for marigolds and sunflowers." },
-            July: { flowers: [680, 720, 510, 470, 430, 380], segments: [820, 940, 720, 520], tips: "Focus on sunflowers and tropical flowers during summer events." },
-            August: { flowers: [700, 740, 520, 480, 440, 390], segments: [840, 960, 740, 540], tips: "August sees corporate event planners buying flowers in bulk. Focus on elegant, classic blooms like lilies." },
-            September: { flowers: [720, 760, 530, 490, 450, 400], segments: [860, 980, 760, 560], tips: "September is ideal for back-to-school promotions. Offer vibrant flowers like daisies and sunflowers." },
-            October: { flowers: [740, 780, 540, 500, 460, 410], segments: [880, 1000, 780, 580], tips: "October brings festive demand for marigolds and chrysanthemums during Diwali." },
-            November: { flowers: [760, 800, 550, 510, 470, 420], segments: [900, 1020, 800, 600], tips: "November sees high sales for Thanksgiving. Offer a variety of seasonal bouquets." },
-            December: { flowers: [780, 820, 560, 520, 480, 430], segments: [920, 1040, 820, 620], tips: "In December, Christmas and New Year drive floral sales. Poinsettias and holly are top sellers." }
+        const flowerSeasons = {
+            Spring: ["Roses", "Tulips", "Daisies", "Lilies", "Jasmine"],
+            Summer: ["Sunflowers", "Marigolds", "Lavender", "Orchids", "Dahlias"],
+            Fall: ["Chrysanthemums", "Pumpkin Flowers", "Asters", "Marigolds", "Zinnias"],
+            Winter: ["Poinsettias", "Holly", "Ivy", "Amaryllis", "Cineraria"]
         };
 
-        const flowerSalesChart = new Chart(
-            document.getElementById('flowerSalesChart'),
-            {
+        const seasonData = {
+            Spring: {
+                flowerSales: [500, 600, 450, 400, 350],
+                consumerSegments: [30, 40, 15, 10, 5],
+                description: "Spring season offers fresh blooms like roses and tulips, best for weddings and celebrations."
+            },
+            Summer: {
+                flowerSales: [800, 750, 600, 550, 500],
+                consumerSegments: [35, 45, 10, 5, 5],
+                description: "Summer is the season for sunflowers and tropical flowers, ideal for events and outdoor occasions."
+            },
+            Fall: {
+                flowerSales: [650, 700, 500, 550, 450],
+                consumerSegments: [40, 40, 10, 5, 5],
+                description: "Fall is perfect for chrysanthemums and autumn flowers for harvest festivals and decoration."
+            },
+            Winter: {
+                flowerSales: [450, 400, 350, 300, 250],
+                consumerSegments: [50, 30, 10, 5, 5],
+                description: "Winter is known for poinsettias and holly, typically used for holiday decorations."
+            }
+        };
+
+        // Function to calculate the season based on location
+        function getSeasonBasedOnLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    const latitude = position.coords.latitude;
+                    const season = determineSeason(latitude);
+                    updateSeason(season);
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Function to determine the season based on latitude (Northern or Southern Hemisphere)
+        function determineSeason(latitude) {
+            const month = new Date().getMonth(); // 0-based, 0 = January
+            const isNorthernHemisphere = latitude > 0;
+
+            // Using simple logic to define seasons based on latitude
+            if (isNorthernHemisphere) {
+                if (month >= 2 && month <= 4) return 'Spring';
+                if (month >= 5 && month <= 7) return 'Summer';
+                if (month >= 8 && month <= 10) return 'Fall';
+                return 'Winter';
+            } else {
+                if (month >= 2 && month <= 4) return 'Fall';
+                if (month >= 5 && month <= 7) return 'Winter';
+                if (month >= 8 && month <= 10) return 'Spring';
+                return 'Summer';
+            }
+        }
+
+        // Function to update season and UI components
+        function updateSeason(season) {
+            const seasonDescription = seasonData[season].description;
+            document.getElementById("seasonDescription").innerHTML = `<p>${seasonDescription}</p>`;
+            
+            const flowerOptions = flowerSeasons[season];
+            const flowerSelector = document.getElementById("flowerSelector");
+            flowerSelector.innerHTML = "";
+            flowerOptions.forEach(flower => {
+                const option = document.createElement("option");
+                option.textContent = flower;
+                flowerSelector.appendChild(option);
+            });
+
+            const seasonSelector = document.getElementById("seasonSelector");
+            seasonSelector.value = season;
+            seasonSelector.disabled = false; // Enable the season selector
+
+            // Update the graphs
+            updateGraphs(season);
+        }
+
+        // Function to update the graphs
+        function updateGraphs(season) {
+            const flowerSales = seasonData[season].flowerSales;
+            const consumerSegments = seasonData[season].consumerSegments;
+
+            // Update Flower Sales by Type chart
+            new Chart(document.getElementById('flowerSalesChart'), {
                 type: 'bar',
-                data: { labels: ['Roses', 'Marigolds', 'Lilies', 'Jasmine', 'Tulips', 'Sunflowers'], datasets: [] },
-                options: { responsive: true }
-            }
-        );
+                data: {
+                    labels: flowerSeasons[season],
+                    datasets: [{
+                        label: 'Flower Sales',
+                        data: flowerSales,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
 
-        const consumerSegmentChart = new Chart(
-            document.getElementById('consumerSegmentChart'),
-            {
-                type: 'doughnut',
-                data: { labels: ['Event Organizers', 'Temple Visitors', 'Daily Consumers', 'Corporate Events'], datasets: [] },
-                options: { responsive: true }
-            }
-        );
+            // Update Consumers by Segment chart
+            new Chart(document.getElementById('consumerSegmentChart'), {
+                type: 'pie',
+                data: {
+                    labels: flowerSeasons[season],
+                    datasets: [{
+                        label: 'Consumer Segments',
+                        data: consumerSegments,
+                        backgroundColor: ['#e5ffe1', '	#d8eeff', '	#6497b1', '	#c7bbc9', '	#bdd0c4'],
+                        borderColor: ['#e5ffe1', '	#d8eeff', '	#6497b1', '	#c7bbc9', '	#bdd0c4'],
+                        borderWidth: 1
+                    }]
+                }
+            });
+        }
 
-        document.getElementById('monthSelector').addEventListener('change', function () {
-            const month = this.value;
-            const data = monthlyData[month];
-
-            // Update Flower Sales Chart
-            flowerSalesChart.data.datasets = [{
-                label: `${month} Flower Sales`,
-                data: data.flowers,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1,
-            }];
-            flowerSalesChart.update();
-
-            // Update Consumer Segment Chart
-            consumerSegmentChart.data.datasets = [{
-                label: `${month} Consumer Segments`,
-                data: data.segments,
-                backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)'],
-                borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)'],
-                borderWidth: 1,
-            }];
-            consumerSegmentChart.update();
-
-            // Display Seasonal Tips
-            document.getElementById('seasonalTips').textContent = data.tips;
-        });
-
-        // Initialize with January data
-        document.getElementById('monthSelector').dispatchEvent(new Event('change'));
+        // Call the function to get the user's location
+        getSeasonBasedOnLocation();
     </script>
 </body>
-
+<script src="script.js"></script>
 </html>
-
