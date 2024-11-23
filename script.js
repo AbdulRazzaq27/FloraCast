@@ -1,131 +1,136 @@
-// Replace with your OpenWeatherMap API token
-const OPENWEATHERMAP_TOKEN = "236bb39302420003220a7db6c237c584";
-
-// Function to handle search
-function searchLocation() {
-    const input = document.getElementById("location").value;
-
-    if (!input) {
-        alert("Please enter a location.");
-        return;
+// Flower data based on months with festivals, flower usage, and customer types
+const flowersAndFestivals = {
+    January: {
+      flowers: ["Marigold", "Roses", "Hibiscus"],
+      festival: "Makar Sankranti",
+      festivalDescription: "Makar Sankranti is a harvest festival celebrated with kite flying, bonfires, and pujas. Marigolds and roses are used for decoration during the puja, while hibiscus is used for offerings.",
+      customerTrends: [
+        "Farmers buying flowers for offerings and decorations.",
+        "Local florists purchasing flowers in bulk for local festivals."
+      ]
+    },
+    February: {
+      flowers: ["Yellow Marigold", "Sunflowers", "Mustard Flowers"],
+      festival: "Vasant Panchami",
+      festivalDescription: "Vasant Panchami marks the arrival of spring and is dedicated to Goddess Saraswati. Yellow flowers like marigolds are used for decorations and offerings to the goddess.",
+      customerTrends: [
+        "Educational institutions buying flowers for Saraswati Puja.",
+        "Devotees purchasing marigolds for worship and decoration."
+      ]
+    },
+    March: {
+      flowers: ["Tulips", "Daffodils", "Marigold", "Roses"],
+      festival: "Holi",
+      festivalDescription: "Holi is the festival of colors. Bright flowers like marigolds and roses are used for rangolis, and tulips and daffodils symbolize the vibrant spirit of the festival.",
+      customerTrends: [
+        "Families buying flowers for rangolis and home decorations.",
+        "Event planners purchasing flowers for large-scale Holi celebrations."
+      ]
+    },
+    April: {
+      flowers: ["Lilies", "Jasmine", "Kanakambara", "Marigold"],
+      festival: "Ugadi",
+      festivalDescription: "Ugadi marks the beginning of the New Year in some regions of India. Marigold flowers and jasmine are used to decorate homes and for puja offerings.",
+      customerTrends: [
+        "Retailers buying flowers for festival decorations.",
+        "Families purchasing flowers for pooja offerings."
+      ]
+    },
+    May: {
+      flowers: ["Peonies", "Marigold", "Hydrangeas"],
+      festival: "Buddha Purnima",
+      festivalDescription: "Buddha Purnima is celebrated to honor Lord Buddha. Flowers like peonies and marigolds are used to decorate Buddha statues and temples.",
+      customerTrends: [
+        "Temple authorities purchasing flowers for decoration and offerings.",
+        "Devotees buying flowers for spiritual rituals."
+      ]
+    },
+    June: {
+      flowers: ["Sunflowers", "Dahlias", "Roses"],
+      festival: "Ramzan (Eid)",
+      festivalDescription: "Eid is celebrated at the end of the month-long fast during Ramzan. Sunflowers and roses are used for home decorations and offering in mosques.",
+      customerTrends: [
+        "Muslim families purchasing flowers for Eid prayers.",
+        "Florists supplying bulk flowers for community celebrations."
+      ]
+    },
+    July: {
+      flowers: ["Lotus", "Jasmine", "Water Lilies"],
+      festival: "Guru Purnima",
+      festivalDescription: "Guru Purnima is dedicated to honoring teachers and spiritual leaders. Lotus flowers are used for rituals and offerings.",
+      customerTrends: [
+        "Schools and educational institutions purchasing lotus flowers.",
+        "Devotees buying flowers for Guru Purnima rituals."
+      ]
+    },
+    August: {
+      flowers: ["Lilly", "Marigold", "Roses"],
+      festival: "Independence Day",
+      festivalDescription: "Independence Day is celebrated with patriotic fervor. Flowers like marigolds and roses are used for flag hoisting ceremonies and decorations.",
+      customerTrends: [
+        "Government institutions purchasing flowers for ceremonies.",
+        "Patriotic-themed flower decorations for public and private events."
+      ]
+    },
+    September: {
+      flowers: ["Chrysanthemums", "Marigolds", "Lotus"],
+      festival: "Ganesh Chaturthi",
+      festivalDescription: "Ganesh Chaturthi celebrates the birth of Lord Ganesha. Flowers like marigolds and chrysanthemums are used for decorating Ganesha idols and the pooja area.",
+      customerTrends: [
+        "People buying flowers for Ganesha idol decorations.",
+        "Florists providing flowers for large-scale community celebrations."
+      ]
+    },
+    October: {
+      flowers: ["Marigold", "Lily", "Chrysanthemum"],
+      festival: "Durga Puja",
+      festivalDescription: "Durga Puja is one of the most widely celebrated festivals in India. Marigolds, lilies, and chrysanthemums are used for temple decorations and rituals.",
+      customerTrends: [
+        "Florists purchasing bulk flowers for decorations.",
+        "Devotees and temples buying flowers for Durga Puja offerings."
+      ]
+    },
+    November: {
+      flowers: ["Jasmine", "Chrysanthemums", "Roses"],
+      festival: "Diwali",
+      festivalDescription: "Diwali, the festival of lights, is celebrated with decorations, rangolis, and pujas. Jasmine, chrysanthemums, and roses are used for lighting up homes and offering prayers.",
+      customerTrends: [
+        "Families buying flowers for Diwali decorations.",
+        "Florists and event planners supplying flowers for Diwali events."
+      ]
+    },
+    December: {
+      flowers: ["Poinsettias", "Camellias", "Holly"],
+      festival: "Christmas",
+      festivalDescription: "Christmas is celebrated with decorations and feasts. Poinsettias and camellias are commonly used for Christmas tree decorations and in home decor.",
+      customerTrends: [
+        "Retailers buying flowers for Christmas decorations.",
+        "Shoppers purchasing poinsettias for home decor and gifting."
+      ]
     }
-
-    // Fetch and display weather and AQI data
-    fetchWeatherData(input);
-}
-
-// Fetch weather data from OpenWeatherMap
-async function fetchWeatherData(cityName) {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${OPENWEATHERMAP_TOKEN}`;
-    try {
-        const response = await fetch(url);
-
-        if (!response.ok) throw new Error("City not found.");
-
-        const data = await response.json();
-        displayWeatherData(data);
-        fetchAQI(data.coord.lat, data.coord.lon);
-    } catch (error) {
-        alert(error.message);
-    }
-}
-
-// Display weather data
-function displayWeatherData(data) {
-    const { name: city, sys, main, weather, wind, visibility } = data;
-    const { country, sunrise, sunset } = sys;
-    const { temp, feels_like, humidity } = main;
-    const description = weather[0].description;
-
-    const mainDiv = document.querySelector(".main");
-    mainDiv.innerHTML = `
-        <div class="weather-container">
-            <h2>Weather in ${city}, ${country}</h2>
-            <p><strong>Temperature:</strong> ${temp}°C</p>
-            <p><strong>Feels Like:</strong> ${feels_like}°C</p>
-            <p><strong>Description:</strong> ${description}</p>
-            <p><strong>Humidity:</strong> ${humidity}%</p>
-            <p><strong>Wind Speed:</strong> ${wind.speed} m/s</p>
-            <p><strong>Visibility:</strong> ${visibility / 1000} km</p>
-            <p><strong>Sunrise:</strong> ${convertToLocalTime(sunrise, data.timezone)}</p>
-            <p><strong>Sunset:</strong> ${convertToLocalTime(sunset, data.timezone)}</p>
+  };
+  
+  // Function to show flowers, festivals, customer trends, and descriptions based on selected month
+  function showFlowersAndFestivals() {
+    const month = document.getElementById("month").value;
+    const resultDiv = document.getElementById("result");
+  
+    if (flowersAndFestivals[month]) {
+      const data = flowersAndFestivals[month];
+      resultDiv.innerHTML = `
+        <h2>Flowers in demand for ${month}</h2>
+        <p><strong>Flowers:</strong> ${data.flowers.join(", ")}</p>
+        <h3>Festival: ${data.festival}</h3>
+        <p>${data.festivalDescription}</p>
+        <h4>Customer Trends:</h4>
+        <div class="customer-trends">
+          <ul>
+            ${data.customerTrends.map(trend => `<li>${trend}</li>`).join("")}
+          </ul>
         </div>
-        <div id="aqi-info" style="display: none;"></div>
-    `;
-}
-
-// Fetch AQI data
-async function fetchAQI(lat, lon) {
-    const url = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${OPENWEATHERMAP_TOKEN}`;
-
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        displayAQI(data.list[0].components);
-    } catch (error) {
-        console.error("Error fetching AQI data:", error);
-    }
-}
-
-// Display AQI data
-function displayAQI(components) {
-    const aqi = calculateAQI(components);
-    const aqiInfo = document.getElementById("aqi-info");
-
-    let aqiDescription = "";
-    let aqiColor = "";
-
-    if (aqi <= 50) {
-        aqiDescription = "Good";
-        aqiColor = "#00e400";
-    } else if (aqi <= 100) {
-        aqiDescription = "Moderate";
-        aqiColor = "#ffff00";
-    } else if (aqi <= 150) {
-        aqiDescription = "Unhealthy for Sensitive Groups";
-        aqiColor = "#ff7e00";
-    } else if (aqi <= 200) {
-        aqiDescription = "Unhealthy";
-        aqiColor = "#ff0000";
-    } else if (aqi <= 300) {
-        aqiDescription = "Very Unhealthy";
-        aqiColor = "#8f3f97";
+      `;
     } else {
-        aqiDescription = "Hazardous";
-        aqiColor = "#7e0023";
+      resultDiv.innerHTML = "Please select a valid month.";
     }
-
-    aqiInfo.style.display = "block";
-    aqiInfo.innerHTML = `
-        <h3>Air Quality Index (AQI)</h3>
-        <p style="color: ${aqiColor}; font-weight: bold;">${aqi} - ${aqiDescription}</p>
-    `;
-}
-
-// Calculate AQI from pollutant concentrations
-function calculateAQI(components) {
-    const pm25 = components.pm2_5;
-
-    if (pm25 <= 12.1) return linearScale(pm25, 0, 12.1, 0, 50);
-    if (pm25 <= 35.5) return linearScale(pm25, 12.1, 35.5, 51, 100);
-    if (pm25 <= 55.5) return linearScale(pm25, 35.5, 55.5, 101, 150);
-    if (pm25 <= 150.5) return linearScale(pm25, 55.5, 150.5, 151, 200);
-    if (pm25 <= 250.5) return linearScale(pm25, 150.5, 250.5, 201, 300);
-    return linearScale(pm25, 250.5, 500.5, 301, 500);
-}
-
-// Helper function for linear scaling
-function linearScale(value, fromLow, fromHigh, toLow, toHigh) {
-    return ((value - fromLow) * (toHigh - toLow)) / (fromHigh - fromLow) + toLow;
-}
-
-// Convert UNIX timestamp to local time
-function convertToLocalTime(unixTimestamp, timezoneOffset) {
-    const localTime = new Date((unixTimestamp + timezoneOffset) * 1000);
-    let hours = localTime.getUTCHours();
-    const minutes = localTime.getUTCMinutes();
-    const ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12 || 12;
-    return `${hours}:${minutes < 10 ? "0" : ""}${minutes} ${ampm}`;
-}
+  }
+  
